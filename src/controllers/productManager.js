@@ -62,24 +62,7 @@ class ProductManager {
     }
   }
 
-  // // FUNCION PARA ACTUALIZAR UN PRODUCTO
-  // async updateProduct(pid, updatedProduct) {
-  //   try {
-  //     const arrayProd = await this.readFiles();
 
-  //     const index = arrayProd.findIndex((item) => item.id === pid);
-
-  //     if (index !== -1) {
-  //       arrayProd.splice(index, 1, updatedProduct);
-  //       await fs.writeFile(this.path, JSON.stringify(arrayProd, null, 2));
-  //       return "producto actualizado";
-  //     } else {
-  //       console.log("No se encontró el producto");
-  //     }
-  //   } catch (error) {
-  //     console.log("Error al actualizar el producto", error);
-  //   }
-  // }
 
   // FUNCION PARA ACTUALIZAR UN PRODUCTO
   async updateProduct(pid, updatedProduct) {

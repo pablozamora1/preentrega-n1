@@ -67,20 +67,19 @@ class CartManager {
     const filterCarts = allCarts.filter((item) => item.id != idCart);
 
     if (cartById.products.some((item) => item.id == idProduct)) {
-      const productCart = cartById.products.find(
+      const moreProductCart = cartById.products.find(
         (item) => item.id == idProduct
       );
-      productCart.quantity++;
-      console.log(productCart.quantity);
-      let allCarts = [cartById, ...filterCarts];
+      moreProductCart.quantity++;
+      console.log(moreProductCart.quantity);
+      const allCarts = [cartById, ...filterCarts];
       await this.writeCart(allCarts);
       return "Se sumo el producto al carrito";
     }
 
-    const productCart = [
-      { id: idCart, products: [{ id: productById.id, quantity: 1 }] },
-      ...filterCarts,
-    ];
+    cartById.products.push({ id: productById.id, quantity: 1 })
+
+    const productCart = [cartById, ...filterCarts];
     await this.writeCart(productCart);
 
     return "producto agregado al carrito";
