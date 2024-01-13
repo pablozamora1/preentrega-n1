@@ -4,16 +4,25 @@ import cartManager from "../controllers/cartManager.js";
 const router = Router();
 const cart = new cartManager();
 
-//agregar productos
+//agregar carrito
 router.post("/", async (req, res) => {
   res.send(await cart.addCart());
 });
-
+//leer carrito
 router.get("/", async (req, res) => {
   res.send(await cart.readCart());
 });
 
-router.get("/:id", async (req, res) => {
-  res.send(await cart.getCartById(req.params.id));
+//buscar carrito por id
+router.get("/:cId", async (req, res) => {
+  const cId = req.params.cId;
+  res.send(await cart.getCartById(cId));
 });
+
+router.post("/:cId/products/:pId", async (req, res) => {
+  const idCart = req.params.cId;
+  const idProduct = req.params.pId;
+  res.send(await cart.addToCart(idCart, idProduct));
+});
+
 export default router;

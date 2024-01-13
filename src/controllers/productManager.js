@@ -46,10 +46,10 @@ class ProductManager {
     }
   }
   // FUNCION PARA BUSCAR UN PRODUCTO POR ID
-  async getProductById(id) {
+  async getProductById(pid) {
     try {
       const arrayProd = await this.readFiles();
-      const find = arrayProd.find((item) => item.id === id);
+      const find = arrayProd.find((item) => item.id == pid);
 
       if (!find) {
         console.log("producto no encontrado");
@@ -62,30 +62,45 @@ class ProductManager {
     }
   }
 
+  // // FUNCION PARA ACTUALIZAR UN PRODUCTO
+  // async updateProduct(pid, updatedProduct) {
+  //   try {
+  //     const arrayProd = await this.readFiles();
+
+  //     const index = arrayProd.findIndex((item) => item.id === pid);
+
+  //     if (index !== -1) {
+  //       arrayProd.splice(index, 1, updatedProduct);
+  //       await fs.writeFile(this.path, JSON.stringify(arrayProd, null, 2));
+  //       return "producto actualizado";
+  //     } else {
+  //       console.log("No se encontró el producto");
+  //     }
+  //   } catch (error) {
+  //     console.log("Error al actualizar el producto", error);
+  //   }
+  // }
+
   // FUNCION PARA ACTUALIZAR UN PRODUCTO
-  async updateProduct(id, updatedProduct) {
+  async updateProduct(pid, updatedProduct) {
     try {
+      const productById = await this.getProductById(pid);
+      if (!productById) return "No se encontró el producto";
+      await this.deleteProduct(pid);
       const arrayProd = await this.readFiles();
-
-      const index = arrayProd.findIndex((item) => item.id === id);
-
-      if (index !== -1) {
-        arrayProd.splice(index, 1, updatedProduct);
-        await fs.writeFile(this.path, JSON.stringify(arrayProd, null, 2));
-        return "producto actualizado";
-      } else {
-        console.log("No se encontró el producto");
-      }
+      const productUpdated = [{ ...updatedProduct, id: pid }, ...arrayProd];
+      await fs.writeFile(this.path, JSON.stringify(productUpdated, null, 2));
+      return "Producto Atualizado";
     } catch (error) {
       console.log("Error al actualizar el producto", error);
     }
   }
 
   // FUNCION PARA ELIMINAR UN PRODUCTO
-  async deleteProduct(id) {
+  async deleteProduct(pid) {
     try {
       const productDelete = await this.readFiles();
-      const productFilter = productDelete.filter((item) => item.id != id);
+      const productFilter = productDelete.filter((item) => item.id != pid);
       await fs.writeFile(this.path, JSON.stringify(productFilter, null, 2));
       return "producto eliminado";
     } catch (error) {

@@ -1,11 +1,21 @@
 [
   {
     "id": "SWfhXkLHai8FDUnOZRDFD",
-    "products": []
+    "products": [
+      {
+        "id": "Duhv7YQqVrvADRoL2cHH8",
+        "quantity": 4
+      }
+    ]
   },
   {
     "id": "7NUoyTD6KzBcttwWk2oS2",
-    "products": []
+    "products": [
+      {
+        "id": "z5G87Vtzaw8QJpu5IOC_h",
+        "quantity": 5
+      }
+    ]
   },
   {
     "id": "wMRwRtlspbAj1M-sGD9YK",

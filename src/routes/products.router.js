@@ -10,24 +10,24 @@ router.post("/", async (req, res) => {
   res.send(await product.addProducts(newProduct));
 });
 //buscar productos por id
-router.get("/:id", async (req, res) => {
-  const id = req.params.id;
-  res.send(await product.getProductById(id));
+router.get("/:pid", async (req, res) => {
+  const pid = req.params.pid;
+  res.send(await product.getProductById(pid));
 });
 // traer los productos
 router.get("/", async (req, res) => {
   res.send(await product.getProducts());
 });
 // delete productos
-router.delete("/:id", async (req, res) => {
-  const id = req.params.id;
-  res.send(await product.deleteProduct(id));
+router.delete("/:pid", async (req, res) => {
+  const pid = req.params.pid;
+  res.send(await product.deleteProduct(pid));
 });
 //actualizar el producto
-router.put("/:id", async (req, res) => {
-  const id = req.params.id;
-  const productUpdate = req.body;
-  res.send(await product.updateProduct(id, productUpdate));
+router.put("/:pid", async (req, res) => {
+  const pid = req.params.pid;
+  const updatedProduct = req.body;
+  res.send(await product.updateProduct(pid, updatedProduct));
 });
 
 export default router;

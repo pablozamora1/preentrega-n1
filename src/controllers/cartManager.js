@@ -1,6 +1,8 @@
 import { promises as fs } from "fs";
 import { nanoid } from "nanoid";
+import ProductManager from "./productManager.js";
 
+const allProducts = new ProductManager();
 class CartManager {
   constructor() {
     this.path = "./src/models/carts.json";
@@ -36,21 +38,52 @@ class CartManager {
       console.log("Error al escribir el archivo", error);
     }
   }
-  // FUNCION PARA BUSCAR UN carrito POR ID
-  async getCartById(id) {
+
+  // FUNCION PARA BUSCAR UN CARRITO POR ID
+  async getCartById(cId) {
     try {
-      const arrayCart = await this.readFiles();
-      const find = arrayCart.find((item) => item.id === id);
+      const arrayCart = await this.readCart();
+      const find = arrayCart.find((item) => item.id == cId);
 
       if (!find) {
-        console.log("producto no encontrado");
+        console.log("carrito no encontrado");
+        return "Carrito No encontrado";
       } else {
-        console.log("producto encontrado");
+        console.log("carrito encontrado");
         return find;
       }
     } catch (error) {
       console.log("Error al leer el archivo", error);
     }
+  }
+  // FUNCION PARA AGREGAR PRODUCTOS AL CARRITO
+  async addToCart(idCart, idProduct) {
+    const cartById = await this.getCartById(idCart);
+    if (!cartById) return "carrito no encontrado";
+    const productById = await allProducts.getProductById(idProduct);
+    if (!productById) return "Producto no encontrado";
+
+    const allCarts = await this.readCart();
+    const filterCarts = allCarts.filter((item) => item.id != idCart);
+
+    if (cartById.products.some((item) => item.id == idProduct)) {
+      const productCart = cartById.products.find(
+        (item) => item.id == idProduct
+      );
+      productCart.quantity++;
+      console.log(productCart.quantity);
+      let allCarts = [cartById, ...filterCarts];
+      await this.writeCart(allCarts);
+      return "Se sumo el producto al carrito";
+    }
+
+    const productCart = [
+      { id: idCart, products: [{ id: productById.id, quantity: 1 }] },
+      ...filterCarts,
+    ];
+    await this.writeCart(productCart);
+
+    return "producto agregado al carrito";
   }
 }
 
